@@ -1,0 +1,128 @@
+API classes 3 Main parts
+1- 7-8 days of basics of api(everything we need for finding job)
+2- 2-3 days advance part (you might need if you found api job)
+3- 1-2 Postman Automation
+
+Having 2 different intellij project
+1 from github, always get updates
+1 for yourself to practice, type, get error,try to fix it.
+
+
+AMAZON UI
+InputBox = 'Selenium'
+
+{"product":"Selenium"}
+
+
+AMAZON BACKEND SEARCH API
+Query = Select product_name,product_price
+ From products
+ where product_name = 'Selenium; INSERT INTO customer jjadasd'
+
+{"product":"Selenium"}
+{
+    "product_name":selenium,
+    "product price":100
+}
+AMAZON DATABASE
+run the query against the amazon database, return the table result
+
+=========================================
+API
+we have 2 main usages of API.
+1. Sharing information between different applications
+for example website like skyscanner has access to different airlines api
+when we fill out the information like departure, from, dates it takes those information and
+send as a request to different airlines APIs, this communication most of the time happens in JSON format.JSON is data storage structure in key and value format.
+
+Once skyscanner sends request, if they have right to ask those information and if they ask in proper format, they will get RESPONSE most of the time same format they asked which is JSON. They will see available flights prices and dates , and they will only display those result in their website.
+
+Another example could be logining using gmail,hotmail,apple id etc in different websites like Airbnb.
+They asked is this valid user, can I access some information like firstname,lastname,dob and if we give permission to google it will be shared with airbnb and we don't need to register seperately
+
+this was the first usage api, which applications are talking to each other.
+
+second usage of API is using api for building backend in single project. in this usage the main motivation is not sharing information with third party applications, it is creating better backend structure to safer,faster, and allowing multi platform development easier.
+
+for example amazon has search functionallity where we provide one product name and it takes that info to look into to database and bring the result. there are many different ways to build backend which we don't care as tester, but using restapi or microservices one of the ways of building it. If developers uses apis basically they build one structure on top of database and we can comminucate with that pia thorugh different tools like postman. commication again will happen with json or xml and it will be only data transfer. so how this is helping the company ?
+
+after they build backend, they can easly map those json information to different application of their product like mobile or tablet applicaiton. an create connection with search api, it will be only basic data transfer between mobile and search api.
+
+these benefits motivate companies to build backend using api, so they hire more testers :)
+
+=================================
+So we sent our first request to our ipaddress
+ourIpAddress:8000/api/spartans
+
+ourIpAddress:8000 + /api/spartans
+baseUrl+endpoints
+
+which we learned from documentation, it displays all spartans
+
+In postman we choose GET request and fill out the URL part and add the endpoint(api/spartans)
+after that we click SEND button to send our first request.
+
+As a RESPONSE we got 3 MAIN parts
+-STATUS CODE
+-HEADER
+-BODY
+
+How do I understand from status code my request is successful ?
+we have 3 main type of status codes
+
+2xx --> succesful API request, there are different 200 types 201,204, we will learn later.
+
+4xx --> which means client error, most of the time we did some mistake, or we asked sth that we don't have right to ask
+
+500 --> if we got 500, it is server/api mistake almost always. the server might be down or could not handle that much request.
+
+====================================
+JSON
+What is JSON ?
+JavaScript Object Notation
+
+Key value pair to represent data
+Key will be always String
+
+
+Values can be:
+    String
+    Number
+    Boolean
+    null
+    Array
+    json Object
+
+{
+    "firstName":"Mike",
+    "lastName" :"Smith",
+    "Age":25,
+    "isMarried":false,
+    "job":null,
+    "hobbies":["traveling","reading","swimmming"],
+    "address":{
+                "street":"jones branch",
+                "zipcode":22101,
+                "state":"VA",
+                "phone":{
+                        "mobile":"12312312",
+                        "work":"123123123"
+                        }
+                }
+}
+
+
+GIVEN ipaddress:8000 + /api/spartans
+WHEN I send a GET request
+THEN status code must be 200
+AND json body needs to include all spartans information
+
+=============================
+Creating maven project for API Automation
+1.File->new->Project (Maven)
+2.please put B25-RestAssured-YourName as a project name, do your practice in this project.
+3.Group Id :com.cydeo
+4.Finish
+
+you will clone my project to get updates.
+
