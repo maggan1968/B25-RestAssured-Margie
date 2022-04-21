@@ -126,3 +126,9 @@ Creating maven project for API Automation
 
 you will clone my project to get updates.
 
+Host IP: 34.230.35.214 (SAME FOR ALL)
+Username: library2_client
+Password: 6s2LQQTjBcGFfDhY
+Database name: library2
+Port: 3306
+JDBC url : jdbc:mysql://34.230.35.214:3306/library2
