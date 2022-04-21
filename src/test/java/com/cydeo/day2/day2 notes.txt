@@ -1,0 +1,41 @@
+Additional information about REQUEST and RESPONSE
+like a map, key value format
+    what we send with headers ?
+        -Data types(application/json,xml,text etc)
+        -credentials (username,password,token,key)
+Request Header
+    Accept, application/json --> hey api, please send me json respone body.
+    Accept, application/xml --> hey api,please send me xml response payload.
+    Credentials we will also send, will do it later.
+Response Headers
+    Content-type, application/json --> hey client, I am sending you json payload/body.
+    Content-type, applicaiton/xml --> hey API tester from B25, I am sending you xml payload/body.
+
+PARAMETERS
+Parameters are options you can pass with endpoint to influence the response
+2 Types of parameters
+    Path parameters
+    Query(Request) Parameters
+
+1.Path Parameters
+It is a part of the url and followed by endpoint
+        baseurl/api/spartans/{id}
+        {id} --> path parameter
+        when we see {}--> we understand there is path param
+
+        if you add :id to your url in postman it will create path variables part under the Params tab
+        you can change the id value from there too without changing url
+2.Query Parameters
+It is NOT part of the url and pased in key=value format.
+baseUrl/api/spartans/search?nameContains=j&gender=Female
+        ?-->means end of the url
+        &--> add another query parameters,separate query parameters
+
+https://www.amazon.com/s?
+k=java
+&
+crid=27Z8G071C8OK7
+&
+sprefix=java%2Caps%2C154
+&
+ref=nb_sb_noss
