@@ -39,6 +39,31 @@ public class HRApiTestsWithParams extends HrTestBase {
                    .when()
                    .get("/countries");
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
            //verify status code
            assertEquals(200,response.statusCode());
            //verify content type
@@ -64,6 +89,8 @@ public class HRApiTestsWithParams extends HrTestBase {
            );
            response.prettyPrint();
        }
+
+
 
        }
 

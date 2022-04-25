@@ -1,0 +1,18 @@
+How to navigate through JSON body/payload and read values from keys ?
+there are multiple ways of navigating through json
+        -using path() method
+        -using JsonPath
+        -using deserialization to Java Collections (Map etc.)
+        -using deserialization to POJO (JAva custom classes)
+
+path() --> response object has .path method where we provide the json key and it return the value of it.
+
+JsonPath
+another way of navigating inside the json body/payload
+to use json path we put response inside the jsonpath object
+
+    JsonPath jsonPath = response.jsonPath();
+
+    then we use jsonpath getters to retrieve information.
+    we still provide path as a GPath just like we use path() method.
+     there is no difference for json or path() to provide path.

@@ -1,0 +1,59 @@
+REQUEST AND RESPONSE
+Different Types of HTTP Requests
+GET --> Read data, retrieve information, SELECT
+POST  --> Create data, insert information for the first time
+PUT --> Update data, change exisiting informaiton
+PATCH --> Partial update data
+DELETE --> Delete
+
+Different HTTP Status codes
+
+2xx --> Successful, working properly, 200,201,204
+4xx --> Client error, 400,404,401,403,406,415 etc
+5xx --> Server error , 500,501,503
+
+GET
+REQUEST
+    -BaseURL +endpoint/method/resources
+              /api/spartans
+              /api/spartans/search
+              /employees
+              /regions
+    -Parameters
+        -Path Parameter --> part of the url, comes after url only the value
+              /api/spartans/{id}
+              {} --> path parameter
+        -Query parameter --> comes after the url, it is not part of the url
+                         --> it is key=value pair
+                         when we see ? in the url, we understand that url is end
+                         we chain multiple query parameters with &
+    -Headers
+        Accept,application/json --> hey api, please send me json payload
+        Accept,application/xml -->hey api, please send me xml
+        Credentials(username,password,token,key) --> we will learn later
+
+
+RESPONSE
+-Status code
+    -2xx
+    -4xx
+    -5xx
+-Headers
+    -Content-type,application/json/xml/.. --> hey client, I am sending you json/xml...
+    -Custom headers like Date, connection status etc.
+-Body
+    body is the part that we see the data
+    it can be in json or xml format, can be anything else also
+
+How do we verify json body ?
+we compare the results with expedted result. to do manually we use postman, postman also capable of automation which we will learn later.
+
+For automation, we use RestAssured library with maven project.
+    we start verifying json body with contains() method, which is not a good practise because we cannot make sure the specific json key is holding that value we are checking. that is why we need other ways to get specific json key value and assert that value against the expedted result.
+    so the second way we use is path() method. we provide the path of the key as a parameter and it returns only that keys value.
+    Also we learned JsonPath method to do same thing, which has more features that we will be learnin later.
+
+ We use swagger to see endpoints,parameters etc. and it is a documentation tool for api.
+
+
+
