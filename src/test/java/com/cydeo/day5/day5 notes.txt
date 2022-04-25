@@ -1,0 +1,65 @@
+Response validations
+
+	so far ,we send all request and stored responses into Response object, then did validations
+	(statuscode,header,body)
+	we can also do all of those actions in single statment by Hamcrest Matchers
+
+	if we are getting one value we can use is() or equalTo() method
+	for working multiple values we have hasItems("value1","value2".. ) method
+	we can iterate through collection result with everyItem() method
+	example
+		everyItem(equalTo("IT_PROG"))
+
+VERIFY RESPONSE PAYLOAD/BODY
+
+1.Using contains method (not recommended)
+	-treat the respone json as a String and do contains assertion on it.
+		response.body().asString().contains("ExpectedValue")
+
+2.using path() method
+	Extract values from json body using path() method, the use Junit5 for assertion
+		String city = response.path("items[0].city");
+		assertEquals(city,"New York");
+
+3.using JsonPath class
+	Convert Response data into JsonPath then use jsonpath getter methods to extract values
+	Use Junit5 for assertion
+
+		JsonPath jsonPath = response.jsonPath();
+		assertEquals(json.getString("gender"),"Male");
+
+4.Hamcrest Matchers with chaining restassured methods.
+	we can do assertions in single statement by chaining method in RestAssured
+	to find values in the body, we use the same path syntax (GPath)
+	then we use hamcrest mathcer assertions to do validaiton
+		.and().body("id",equalTo(15),"name",is("Meta"));
+
+
+5.Converting JSON response to Java collection/Data Structure
+
+Response json body --> Java collection
+{
+    "id": 15,
+    "name": "Meta",
+    "gender": "Female",
+    "phone": 1938695106
+}
+
+Map<String,Object> jsonMap = response.body().as(Map.class);
+
+Deserialization --> JSON to JAVA
+
+		Jackson or Gson --> those are libraries to deserialization and serialization. they are also know as objectMapper,jsonparser, databinding libraries. we added jackson(databind) library to our pom.xml to deserialize
+
+6.Converting JSON to POJO(Custom classes)
+
+
+we want to automate api vs database testing with maven project.
+so we have api dependencies ready for api request we can send get request to api/spartans/
+ endpoint to retrieve individual api result. then we can store it in Map<String,Object> with the
+  help of Jackson Library and as() method from rest assured.
+
+
+
+
+
