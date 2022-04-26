@@ -1,0 +1,40 @@
+Map<String,Object> jsonMap = response.as(Map.class);
+
+School school1 = response.as(School.class);
+
+school1.
+
+So we have converted our json response to pojo class which is our custom class that we created for Spartan. this is als ocalled deserialization because we convert JSON to JAVA at the end.
+we have two different way to get this conversion
+
+1.response.as(ClassName.class) method where we give the custom class as a convertion type.
+
+    Spartan spartan15 = response.as(Spartan.class)
+    this method will work if we have Jackson(Databind) or Gson libraries in our pom.xml because they are the one who does deserialization. when we look definition of the as() method it says if you add one of those, i will do convertion for you.
+
+2.Second way is usin JsonPath object getter like getObject.
+
+    Spartan s15 = jsonPath.getObject("",Spartan.class)
+
+    It also uses jackson or gson, but the benefits of uson this method, while we do deserialization we can also give path.
+
+Scenario: when we use api/spartan/search endpoint we got result in following format.
+
+so we have one json object,consist of 2 keys, content and totalElement
+content is keeping multiple spartan json objects.
+
+{
+    content:[{},{}],
+    totalElement:99
+}
+
+
+so the question is how can we save second spartan jsonObject inside the content array ?
+
+to get this one in one shot, we need to point second element of the content and also do deserialization to Spartan class. so what we used is jsonPath.getObject method where we have option to provide path and classType at the same time.
+
+
+    Spartan s2 = jsonPath.getObject("content[1]",Spartan.class)
+
+as you see above, we pointed the second element and tell we want to convert it to Spartan class.
+response.as() method does NOT have option to use path and class at the same time , that is the reason JsonPath sometimes could be more useful.
