@@ -31,7 +31,7 @@ public class SpartanAPI_VS_DB extends SpartanTestBase {
         System.out.println(apiMap.toString());
 
         //we need to get information from database
-        //which db we will connect ? oracle so we added depedency
+        //which db we will connect ? oracle so we added dependency
         //we need connection String of spartan db
         String query = "SELECT SPARTAN_ID,NAME,GENDER,PHONE\n" +
                 "FROM SPARTANS\n" +

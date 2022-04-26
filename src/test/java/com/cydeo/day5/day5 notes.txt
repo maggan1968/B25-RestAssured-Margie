@@ -2,7 +2,7 @@ Response validations
 
 	so far ,we send all request and stored responses into Response object, then did validations
 	(statuscode,header,body)
-	we can also do all of those actions in single statment by Hamcrest Matchers
+	we can also do all of those actions in single statement by Hamcrest Matchers
 
 	if we are getting one value we can use is() or equalTo() method
 	for working multiple values we have hasItems("value1","value2".. ) method
@@ -13,7 +13,7 @@ Response validations
 VERIFY RESPONSE PAYLOAD/BODY
 
 1.Using contains method (not recommended)
-	-treat the respone json as a String and do contains assertion on it.
+	-treat the response json as a String and do contains assertion on it.
 		response.body().asString().contains("ExpectedValue")
 
 2.using path() method
@@ -31,7 +31,7 @@ VERIFY RESPONSE PAYLOAD/BODY
 4.Hamcrest Matchers with chaining restassured methods.
 	we can do assertions in single statement by chaining method in RestAssured
 	to find values in the body, we use the same path syntax (GPath)
-	then we use hamcrest mathcer assertions to do validaiton
+	then we use hamcrest mathcer assertions to do validation
 		.and().body("id",equalTo(15),"name",is("Meta"));
 
 

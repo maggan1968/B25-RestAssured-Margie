@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class SpartanGetRequests {
 
 
-    String url = "http://44.201.121.105:8000";
+    String url = "http://3.83.127.158:8000" ;
 
     /*
         Given Accept type is application/json
