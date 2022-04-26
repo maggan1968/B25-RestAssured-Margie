@@ -1,5 +1,6 @@
 package com.cydeo.day6;
 
+import com.cydeo.pojo.Search;
 import com.cydeo.pojo.Spartan;
 import com.cydeo.utilities.SpartanTestBase;
 import io.restassured.http.ContentType;
@@ -12,7 +13,7 @@ import static io.restassured.RestAssured.given;
 
 public class SpartanPojoGetRequestTest extends SpartanTestBase {
 
-    @DisplayName("Compare one spartan information api vs db")
+    @DisplayName("GET one spartan and convert it to Spartan Object")
     @Test
     public void test1() {
         //we need to get api information
@@ -39,10 +40,44 @@ public class SpartanPojoGetRequestTest extends SpartanTestBase {
         //2.using JsonPath to deserialize to custom class
         JsonPath jsonPath = response.jsonPath();
 
-        Spartan s15 = jsonPath.getObject("",Spartan.class);
+        Spartan s15 = jsonPath.getObject("", Spartan.class);
         System.out.println(s15.getName());
         System.out.println(s15.getGender());
 
     }
 
+    @DisplayName("GET one spartan from search endpoint and use POJO")
+    @Test
+    public void test2() {
+
+        JsonPath jsonPath = given()
+                .accept(ContentType.JSON)
+                .when().get("/api/spartans/search")
+                .then().statusCode(200)
+                .extract().jsonPath();
+
+        //get the second spartan from the content list and put inside the spartan object
+        Spartan spartan = jsonPath.getObject("content[1]", Spartan.class);
+        System.out.println(spartan.getName());
+        System.out.println(spartan);
+
+    }
+
+    @DisplayName("GET one spartan from search endpoint and use POJO")
+    @Test
+    public void test3() {
+
+        Response response = given()
+                .accept(ContentType.JSON)
+                .when().get("/api/spartans/search")
+                .then().statusCode(200)
+                .extract().response();
+
+        //get the full content json and convert it to Search object
+        Search searchResult = response.as(Search.class);
+
+        System.out.println(searchResult.getTotalElement());
+        System.out.println(searchResult.getContent().get(1).getName());
+
+    }
 }
