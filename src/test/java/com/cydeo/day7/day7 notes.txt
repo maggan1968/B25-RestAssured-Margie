@@ -1,0 +1,71 @@
+Core API (2 days left) --> ready for interview, mosty ready for work
+Advanced Classes (XmlPath,Request and Response Specification, Junit 5 Feautres, SOAP API,Advanced Cucumber Framework) 3-4days
+Postman Automation 1 day
+Monday is OFF, NO CLASS (EID)
+
+HTTP REQUESTS
+GET - read, retrieve,get data from api
+POST - create, add new information for the first time
+PUT - update existing information
+PATCH - partial update existing information
+DELETE - remove, delete existing information
+
+
+POST METHOD
+we use it to create something, we learn how to use it based on api from documentation.
+documentation can be swagger or sth else.
+
+
+PART OF POST REQUEST
+	-BaseURL+Endpoint
+	-Request BODY
+		{
+ 		 "gender": "Male",
+		  "name": "Harold Finch",
+ 		 "phone": 1234567543
+		}
+	-Headers
+		-Accept,application/json --> hey api, I want json resopnse from you
+		-Content-type,application/json --> hey api, I AM SENDING YOU JSON REQUEST BODY.
+	    -Auth(if we any)
+    -Query or path parameter still possible but we dont have in spartan example.
+
+PART OF POST RESPONSE
+	-Status Code --> almost always it will be 201 for post request, but it can be 200 too or sth else
+	-headers --> similar to get request
+	-body
+		-some succesful message to show we post correctly
+		-same data that we send most of the time, also some id if it is auto generated
+
+
+PUT Request
+we use put request to update existing record, for spartan api we had following request and response structure
+
+PART OF PUT REQUEST
+	-BaseUrl+Enpoint
+	-Path parameter --> to tell which spartan we want to update
+	-Request JSON BODY --> we provide 3 of the keys even if we only update one of them
+		{
+ 		 "gender": "Male",
+		  "name": "Harold Finch",
+ 		  "phone": 1234567543
+		}
+	-Headers
+ 		-Accept,application/json --> hey api, I want json resopnse from you
+		-Content-type,application/json --> hey api, I AM SENDING YOU JSON REQUEST BODY.
+	    -Auth(if we any)
+	    we didnt include Accept header, the reason is we get 204 for spartan put request which means it is succesful but there is no response body in return. since we are not getting any respone body, there is no point to ask json response from api.
+
+PART OF PUT RESPONSE
+	-Status code --> 204 No content --> for spartan we got this, it means no response body but it is successful
+	-headers --> custom headers, bu no content type header because we didnt get any response body.
+
+
+PUT vs PATCH
+
+they both update the result basically existing information the only difference between them is while we updating even one value from json with PUT request, we HAVE TO provide full json body for that request. but when we use PATCH request we do NOT need to provide the fields that we will NOT change. we can only put jsonkeys that we want to update it and it will work. for spartan api PATCH request alsa return 204.
+
+DELETE
+for spartan we just proivde path parameter and switch our request to DELETE
+it will return 204 no content as a status code.
+we can delete one spartan at a time.

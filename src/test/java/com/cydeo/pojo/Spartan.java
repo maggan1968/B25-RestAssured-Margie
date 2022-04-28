@@ -1,5 +1,9 @@
 package com.cydeo.pojo;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = "id",allowSetters = true)//including
 public class Spartan {
 
     //to create pojo
