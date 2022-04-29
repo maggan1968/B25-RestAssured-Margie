@@ -1,5 +1,6 @@
 Core API (2 days left) --> ready for interview, mosty ready for work
-Advanced Classes (XmlPath,Request and Response Specification, Junit 5 Feautres, SOAP API,Advanced Cucumber Framework) 3-4days
+Advanced Classes (XmlPath,Request and Response Specification, Junit 5 Feautres, SOAP API,
+Advanced Cucumber Framework) 3-4days
 Postman Automation 1 day
 Monday is OFF, NO CLASS (EID)
 
@@ -39,7 +40,8 @@ PART OF POST RESPONSE
 
 
 PUT Request
-we use put request to update existing record, for spartan api we had following request and response structure
+we use put request to update existing record, for spartan api we had following request and
+response structure
 
 PART OF PUT REQUEST
 	-BaseUrl+Enpoint
@@ -54,18 +56,97 @@ PART OF PUT REQUEST
  		-Accept,application/json --> hey api, I want json resopnse from you
 		-Content-type,application/json --> hey api, I AM SENDING YOU JSON REQUEST BODY.
 	    -Auth(if we any)
-	    we didnt include Accept header, the reason is we get 204 for spartan put request which means it is succesful but there is no response body in return. since we are not getting any respone body, there is no point to ask json response from api.
+	    we didnt include Accept header, the reason is we get 204 for spartan put request which
+	    means it is succesful but there is no response body in return. since we are not getting any
+	    respone body, there is no point to ask json response from api.
 
 PART OF PUT RESPONSE
-	-Status code --> 204 No content --> for spartan we got this, it means no response body but it is successful
+	-Status code --> 204 No content --> for spartan we got this, it means no response body but it
+	is successful
 	-headers --> custom headers, bu no content type header because we didnt get any response body.
 
 
 PUT vs PATCH
 
-they both update the result basically existing information the only difference between them is while we updating even one value from json with PUT request, we HAVE TO provide full json body for that request. but when we use PATCH request we do NOT need to provide the fields that we will NOT change. we can only put jsonkeys that we want to update it and it will work. for spartan api PATCH request alsa return 204.
+they both update the result basically existing information the only difference between them is
+while we updating even one value from json with PUT request, we HAVE TO provide full json body for
+that request. but when we use PATCH request we do NOT need to provide the fields that we will NOT change.
+we can only put jsonkeys that we want to update it and it will work. for spartan api PATCH request alsa
+return 204.
 
 DELETE
 for spartan we just proivde path parameter and switch our request to DELETE
 it will return 204 no content as a status code.
 we can delete one spartan at a time.
+
+HOW TO TEST POST REQUEST WITH RESTASSURED LIBRARY ?
+
+we use 3 different ways to send jsonBody with post request.
+
+1.sending JSON as a String
+    String requestBody  ="{\n" +
+             "      \"gender\":\"Male\",\n" +
+             "      \"name\":\"Severus\",\n" +
+             "      \"phone\":8877445596\n" +
+             "   }";
+we created json structure manually(or copy paste from postman/swagger) and saved in one string variable
+ in java and use .body(variableName) method to send with request part.
+
+RESPONSE BODY
+JSON to JAVA --> de serialize to MAP,LIST,POJO(custom class) (we use for GET request mostly)
+JAVA to JSON --> serialization (we use for post,put,patch) when we send json body inside the request.
+
+
+2.Using MAP to send JSON object
+
+we store request body information into one java map, then we pass mapname to .body(yourMapName),
+it will auto serialize if we have Jackson or Gson as a dependency. we dont nede to do it manually
+using those libraries
+
+//create a map to keep request json body information
+  Map<String,Object> requestMap = new LinkedHashMap<>();
+        requestMap.put("gender","Male");
+        requestMap.put("name","Severus Snape");
+        requestMap.put("phone",8877445596l);
+
+3.Using POJO to send JSON object
+
+  //create one object from your pojo, send it as a JSON
+        Spartan spartan = new Spartan();
+        spartan.setName("SeverusSpartan");
+        spartan.setGender("Male");
+        spartan.setPhone(8877445596l);
+
+
+so just like a map, we can store spartan information inside the one pojo class and when we give name
+of the object to .body(objectName) method, it will be auto serialize our custom object too. so the only
+thing we need to do is creating object. pass needed information and give it to the .body method in the
+request part.
+
+Scenario: we have one Spartan pojo class for saving JSON response which consist of 4 fields.Can we use
+same class to send request body ? because we deserialize 4 fields but we only need 3 fields to send JSON
+body with the POST method.Documentation says ID is auto generated please do not send it
+
+so the solution is we need to use jackson annotation, when it comes to converting our object and sending
+as a JSON, it will ignore ID field.but how ?
+
+
+	on top of our pojo class, we will add
+	@JsonIgnoreProperties(value = "id", allowSetters = true)
+	this annotation to tell only deserialize id field, do NOT serialize
+
+========================
+
+whenever we are sending request body(POST,PUT,PATCH) as a JSON, we need to tell api that we are sending
+JSON Body and the way of telling this is adding another header which is Content-type,application/json
+
+	 given().accept(ContentType.JSON).log().all() // what we are asking from api which is
+	  .and()
+     .contentType(ContentType.JSON) // what we are sending to api which is JSON
+
+if we are not getting any json body in return, we do NOT need to specift accept type bc the reason is
+we got 204, which means there is no response body. Accepts tells we want json body, if there is no
+body why should I ask for JSON body ???
+
+==========================================================================================================
+
