@@ -145,7 +145,8 @@ JSON Body and the way of telling this is adding another header which is Content-
      .contentType(ContentType.JSON) // what we are sending to api which is JSON
 
 if we are not getting any json body in return, we do NOT need to specift accept type bc the reason is
-we got 204, which means there is no response body. Accepts tells we want json body, if there is no
+we got 204, which means there is no response body. Ac
+cepts tells we want json body, if there is no
 body why should I ask for JSON body ???
 
 ==========================================================================================================

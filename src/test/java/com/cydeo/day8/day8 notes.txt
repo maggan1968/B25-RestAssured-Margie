@@ -1,0 +1,27 @@
+BOOKIT
+
+so based on api doc, we provide email and password to generate accessToken, this accessToken needs to be included all of the api requests.
+
+https://cybertek-reservation-api-qa.herokuapp.com/sign?email=lfinnisz@yolasite.com&password=lissiefinnis
+
+https://cybertek-reservation-api-qa.herokuapp.com/sign --> this is baseurl+sign endpoint for generating token
+we need to provide 2 query parameter which are required to get token
+
+email=lfinnisz@yolasite.com
+&
+password=lissiefinnis
+
+
+eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTMxMiIsImF1ZCI6InN0dWRlbnQtdGVhbS1sZWFkZXIifQ.ZIHJuDh19eLga3bLP7udnvNtEA0DM_W1H67ah2Zu3Lc
+
+once we have the token, api doc says you need to include token in request header with following format;
+
+header("Authorization","Bearer your-token-here")
+
+in postman, we can use Authorization tab and select Bearer token, and paste it there so that we can send request to different endpoints. in restassured we need .header() method after given() part before we send the request.
+
+  given()
+                .header("Authorization",accessToken)
+                .accept(ContentType.JSON)
+        .when()
+                .get("/api/campuses")

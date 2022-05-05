@@ -32,9 +32,8 @@ public class SpartanGetRequests_homeWork {
 
        String query = "SELECT SPARTAN_ID,NAME,GENDER,PHONE\n" +
                "FROM SPARTANS\n";
-        Map<String, Object> dbMap = DBUtils.getRowMap(query);
+        System.out.println("query = " + query);
 
-        System.out.println(dbMap);
 
         }
 
