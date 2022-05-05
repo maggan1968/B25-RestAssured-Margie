@@ -1,0 +1,172 @@
+Can you do assertion if you are getting xml response in restassured ?
+You have talked about verifiying json response, can you do verification with xml payload ?
+
+Yes,just liike jsonPath we have xmlPath class from response object in restassured library.
+so I know how to retrieve value from xml response. with xmlpath I can get any tag value or attrivute value and do needed assertion.
+
+       XmlPath xmlPath = response.xmlPath();
+
+        //get given name
+        String givenName = xmlPath.getString("MRData.DriverTable.Driver.GivenName");
+
+        //if you are trying to get attribute we use @ sign
+        String driverId = xmlPath.getString("MRData.DriverTable.Driver.@driverId");
+
+we navigate between parent child with using . and if there are multiple elements we can use index[0,1,2..]
+
+in order to get attribute we use @ sign.
+
+
+======================================
+SOAP (Simple OBject Access Protocol)
+
+-It has strict rule on how to send request and response
+-Soap request use XMl format to send and receive response
+-ONLY method allowed in SOAP is POST
+-The content type is always XML
+-Body is enclosed in envelop like structure example;
+
+ONE SOAP REQUEST
+
+-URL: https://www.dataaccess.com/webservicesserver/NumberConversion.wso
+
+-Request Header: Content-Type text/xml; charset=utf-8
+
+-Request Body :
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <NumberToWords xmlns="http://www.dataaccess.com/webservicesserver/">
+      <ubiNum>500</ubiNum>
+    </NumberToWords>
+  </soap:Body>
+</soap:Envelope>
+
+Example Response:
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <m:NumberToWordsResponse xmlns:m="http://www.dataaccess.com/webservicesserver/">
+            <m:NumberToWordsResult>five hundred </m:NumberToWordsResult>
+        </m:NumberToWordsResponse>
+    </soap:Body>
+</soap:Envelope>
+
+============================================
+============================================
+How to verify response time with Restassured library ?
+
+Once we sent the request, after then(). method there is time(matchers) method which takes the response time and based on the matcher we provide, it will do assertion.
+
+we can use greaterThan(),lessThan(), or both at the same time
+
+        .then()
+                .statusCode(200)
+                .and()
+                .time(both(greaterThan(500L)).and(lessThan(1200L)))
+                .extract().response();
+
+we can also get the value out of response object with response.getTime() method.
+
+===========================================
+===========================================
+Json Schema Validation
+
+Json Schema is description,template,structure of Json Data.
+{
+    "id": 10,
+    "name": "Lorenza",
+    "gender": "Female",
+    "phone": 3312820936
+}
+
+id --> required, integer, up to 5 digits
+name --> required,string, up to 30 char
+gender --> optional, Male or Female
+phone --> optional, default 0
+
+to create json schema in  case you need it --> https://www.jsonschema.net/app/schemas/0
+
+to manually test json schema --> https://www.jsonschemavalidator.net/
+
+
+STESP for VALIDATION
+1. You will get JSON schema for each endpoint you hva that is returning json body/payload
+
+2.Save  those .json files under resousrces folder
+
+3.Add json Schedma Validatior dependency to your pom.xml
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+4.then perform required api request to test specific schema example:
+
+    lets say you are getting one spartan, you will test with singleSpartanSchema.json file
+
+             .then()
+           .statusCode(200)
+           .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("SingleSpartanSchema.json"))
+                    .log().all();
+
+JsonSchemaValidator --> class that we use for schema validation
+
+if the file under resouserces we use matchesJsonSchemaInClasspath("file name") method.
+file name will be enough
+
+if the file is not under resources then we use matchesJsonSchema(new File("file path under project starts wiht src/")) to provide file to JsonSchemaValidator class.
+=================================================
+=================================================
+HTTP vs HTTPS
+HTTPS--> secure connection,secure HTTP
+anytime you visit a website which is https, secured and encrypted connection will be setup between you and the server.
+it means when you type card numbers, data cannot be stolen on the way.
+sometimes api also require certificates.
+
+if we are getting javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+
+exception but we still want to connect, we can say relaxedHTTPSValidation so restassured will send request anyway.
+
+ given()
+                    .relaxedHTTPSValidation().
+            when()
+                    .get("https://untrusted-root.badssl.com/%22)
+                    .prettyPrint();
+
+    given().keyStore("","")
+                    .when().get("url");
+
+
+for postman to add certificate --> preferences --> certificate tab, add certificate.
+
+==================================
+==================================
+HTTP STATUS CODES
+2xx --> SUCCESSFUL
+	200 OK --> most common success status code, GET is returing, others might return too.
+	201 CREATED --> we will be getting it for POST request almost always.
+	204 No Content --> successful but no respond body(json,xml,text etc..) only headers and status code as response , for spartan put/patch/delete we got 204.
+
+4xx--> CLIENT ERROR
+	400 Bad Request --> sending bad data to server
+			--example: when we post a new spartan, if we dont have proper json body, it will return 400,
+	401 Unauthorized --> no credentials, api does not know who we are. no token etc.
+			--example: try to get spartan :7000 without providing username and password
+	403 Forbidden --> we have credentials or token but dont have right/permission to do 				action
+	404 Not Found --> the resource you are looking for does not exist
+	405 Method not Allowed --> cannot perform this http method on the the endpoint
+			--example: /api/spartans/10 is valid for GET request but if you send POSt request it will give  you 405. bsaically endpoint is valid, only does NOT support the method you used.
+	406 Not Acceptable --> Endpoint only support getting the response in certain format like JSON and we asked for a format that is not supported like XML.
+			--example: we can get all spartan in xml format but for individual spartan like /api/spartan/10 with header Accept, application/xml will return 406.basically api is telling us it is not supported. in ords api even if we asked xml we got 200 and result is still json. which is a bug example.
+	415 Unsupported media type --> server is expecting to get the body in certain content type, but the client send unsupported content type.
+			example: ifwe use content-type application/xml to POST something to spartans, it will complain with 415.
+
+
+5xx--> SERVER ERROR
+		500 Internal Server Error --> the server encountered and unexpected condition that prevented it from fulfiling the request.
+		503 Service Unavailable --> the server is currently unable to handle the request due to a temporary overload or scheduled maintenance. ```
