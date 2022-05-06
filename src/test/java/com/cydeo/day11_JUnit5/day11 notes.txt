@@ -1,0 +1,23 @@
+How do you test rest api?
+    I verify if each REST API endpoint is working as expected.
+I send GET, POST,PUT,PATCH,DELETE type of requests and verify response status code and response body/payload, headers.
+
+I also do positive and negative testing of API.
+    When I do positive testing, I send valid request parameters , valid headers, valid request json body and verify that response status code is 200 successful and Json response body data is also matching the expected.
+
+    When I do negative testing, I send invalid request parameters , or invalid headers, or invalid request json body and verify that response status code is NOT 200 and Json response body contains error message.
+------------------------
+
+I also do JSON Schema validation with comparing result against the schema. I verify requirements for each fields like, what could be the values, min,max lengh
+boundries. I can automate all of those process including json schema validation
+
+Mostly I use postman as a manual api testing tool but I can use it for automation too. I have java maven project where I use RestAssured library and Jackson databinding for automating rest api. I have pojo classes for request and response Json body, I implement serialization and deserialization with the help of Jackson library.
+
+How does API Authentication work in your application ? 
+
+I send a get request to special api endpoint with providing valid credentials (username,password or email,password), then it returns  AccessToken. I use that token in my request header and access other api endpoints. I always send accesstoken with all of my requests through headers.
+
+======================== 
+DOCUMENTATION OF API: SWAGGER
+MANUAL TESTING OF API: POSTMAN,SOAP UI
+AUTOMATED TESTING OF API: REST-ASSURED LIBRARY IN JAVA
